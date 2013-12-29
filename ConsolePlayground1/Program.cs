@@ -10,8 +10,6 @@ namespace ConsolePlayground1
     class Program
     {
 
-        
-
         public static void Main(string[] args)
         {
             Dictionary<int, string> menuItems = new Dictionary<int, string>();
@@ -24,7 +22,7 @@ namespace ConsolePlayground1
             Console.WriteLine("\nYou selected to run: " + menuItems[Convert.ToInt16(selection)]);
 
             Type type = typeof(Program);
-            MethodInfo info = type.GetMethod(menuItems[Convert.ToInt16(selection)]);
+            MethodInfo info = type.GetMethod(GetMethodByAttributeName(menuItems[Convert.ToInt16(selection)]));
             info.Invoke(null, new object[] { });
 
             Console.ReadLine();
@@ -45,7 +43,8 @@ namespace ConsolePlayground1
                 {
                     if (attr is MenuItemAttribute)
                     {
-                        menuItems.Add(count, i.Name.ToString());
+                        MenuItemAttribute mi = attr as MenuItemAttribute;
+                        menuItems.Add(count, mi.Name);
                         count++;
                     }
                 }
@@ -62,21 +61,53 @@ namespace ConsolePlayground1
             }
         }
 
-        [MenuItem]
+        static string GetMethodByAttributeName(string attrName)
+        {
+            Type type = typeof(Program);
+            MethodInfo[] info = type.GetMethods();
+
+            foreach (MethodInfo i in info)
+            {
+                foreach (object attr in i.GetCustomAttributes(true))
+                {
+                    if (attr is MenuItemAttribute)
+                    {
+                        MenuItemAttribute mi = attr as MenuItemAttribute;
+                        if (mi.Name == attrName)
+                        {
+                            return i.Name.ToString();
+                        }
+                    }
+                }
+            }
+
+            return String.Empty;
+        }
+
+        [MenuItem("First Method")]
         public static void FirstMethod()
         {
             Console.WriteLine("You have called firstMethod()");
         }
-        [MenuItem]
+        
+        [MenuItem("Second Method")]
         public static void The2ndMethod()
         {
             Console.WriteLine("from the2ndMethod!!()");
         }
 
-        [MenuItem]
+        [MenuItem("Third Method")]
         public static void ThrirdMethod()
         {
             Console.WriteLine("3rd()");
         }
+
+        [MenuItem("Call me what you would like.")]
+        public static void myNewMethod()
+        {
+            Console.WriteLine("This is AWESOME!!!");
+        }
+
+
     }
 }
