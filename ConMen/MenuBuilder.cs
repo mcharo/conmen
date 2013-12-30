@@ -8,22 +8,21 @@ using System.Diagnostics;
 
 namespace ConMen
 {
-    class MenuBuilder
+    public class MenuBuilder
     {
-        Menu _menu;
-        public MenuBuilder()
+        public MenuBuilder(object instanceOfMenuClass)
         {
-            _menu = new Menu();
-            PrintMenu();
+            PrintMenu(instanceOfMenuClass);
         }
-        public static Dictionary<int, string[]> BuildMenu()
+        internal static Dictionary<int, string[]> BuildMenu(object instanceOfMenuClass)
         {
             // keep count of the number of menu items
             int count = 0;
             Dictionary<int, string[]> menuItems = new Dictionary<int, string[]>();
 
             // use reflection to build a dictionary (ex. 1:firstMethod, 2: the2ndMethod) and the loop over dictionary to print menu.
-            Type type = typeof(Menu);
+
+            Type type = instanceOfMenuClass.GetType();
             MethodInfo[] info = type.GetMethods();
             bool exitFound = false;
             foreach (MethodInfo i in info)
@@ -49,9 +48,9 @@ namespace ConMen
             return menuItems;
         }
 
-        public void PrintMenu()
+        internal void PrintMenu(object instanceOfMenuClass)
         {
-            Dictionary<int, string[]> menuItems = BuildMenu();
+            Dictionary<int, string[]> menuItems = BuildMenu(instanceOfMenuClass);
             while (true)
             {
                 Console.WriteLine("Please select a number from the menu below:");
@@ -67,7 +66,7 @@ namespace ConMen
                     {
                         Console.WriteLine("\nYou selected to run: " + menuItems[selection][0]);
 
-                        Type type = typeof(Menu);
+                        Type type = instanceOfMenuClass.GetType();
                         if (menuItems[selection][1] == "defaultExit")
                         {
                             Environment.Exit(0);
@@ -75,7 +74,7 @@ namespace ConMen
 
                         MethodInfo info = type.GetMethod(menuItems[selection][1]);
                         
-                        info.Invoke(_menu, null);
+                        info.Invoke(instanceOfMenuClass, null);
                         //info.Invoke(null, new object[] { });
                     }
                     else

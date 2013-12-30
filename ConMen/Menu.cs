@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConMen
 {
-    class Menu
+    internal class Menu
     {
         [MenuItem("First Method")]
         public static void FirstMethod()

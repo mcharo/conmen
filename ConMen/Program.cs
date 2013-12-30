@@ -8,12 +8,12 @@ using System.Diagnostics;
 
 namespace ConMen
 {
-    class Program
+    internal class Program
     {
 
         public static void Main(string[] args)
         {
-            MenuBuilder mb = new MenuBuilder();
+            MenuBuilder mb = new MenuBuilder(new Menu());
         }
 
         
