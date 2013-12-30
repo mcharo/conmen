@@ -7,8 +7,8 @@
     <ProjectGuid>{0A15054E-6884-412D-8850-C64DCFEF423E}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ConsolePlayground1</RootNamespace>
-    <AssemblyName>ConsolePlayground1</AssemblyName>
+    <RootNamespace>ConMen</RootNamespace>
+    <AssemblyName>ConMen</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

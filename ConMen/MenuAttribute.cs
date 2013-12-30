@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConsolePlayground1
+namespace ConMen
 {
     [AttributeUsage(AttributeTargets.Method)]
     public class MenuItemAttribute : Attribute

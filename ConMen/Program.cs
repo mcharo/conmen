@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using System.Diagnostics;
 
-namespace ConsolePlayground1
+namespace ConMen
 {
     class Program
     {
@@ -41,6 +42,7 @@ namespace ConsolePlayground1
                 catch (Exception e)
                 {
                     // on invalid input, clear and reset menu
+                    Debug.WriteLine(e);
                     Console.Clear();
                     continue;
                 }
