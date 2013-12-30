@@ -15,17 +15,40 @@ namespace ConsolePlayground1
             Dictionary<int, string> menuItems = new Dictionary<int, string>();
 
             menuItems = BuildMenu(menuItems);
-            Console.WriteLine("Please select a number from the menu below:");
-            PrintMenu(menuItems);
-            Console.Write("Your selection: ");
-            string selection = Console.ReadLine();
-            Console.WriteLine("\nYou selected to run: " + menuItems[Convert.ToInt16(selection)]);
+            while (true)
+            {
+                Console.WriteLine("Please select a number from the menu below:");
+                PrintMenu(menuItems);            
+                Console.Write("Your selection: ");
+                try
+                {
+                    int selection = int.Parse(Console.ReadLine());
+                    if (selection < menuItems.Count)
+                    {
+                        Console.WriteLine("\nYou selected to run: " + menuItems[selection]);
 
-            Type type = typeof(Program);
-            MethodInfo info = type.GetMethod(GetMethodByAttributeName(menuItems[Convert.ToInt16(selection)]));
-            info.Invoke(null, new object[] { });
-
-            Console.ReadLine();
+                        Type type = typeof(Program);
+                        MethodInfo info = type.GetMethod(GetMethodByAttributeName(menuItems[Convert.ToInt16(selection)]));
+                        info.Invoke(null, new object[] { });
+                    }
+                    else
+                    {
+                        // on invalid input, clear and reset menu
+                        Console.Clear();
+                        continue;
+                    }
+                }
+                catch (Exception e)
+                {
+                    // on invalid input, clear and reset menu
+                    Console.Clear();
+                    continue;
+                }
+                // on valid input, pause to view output
+                Console.WriteLine("Press <Enter> to continue.");
+                Console.ReadLine();
+                Console.Clear();
+            }
         }
 
         static Dictionary<int, string> BuildMenu(Dictionary<int, string> menuItems)
@@ -106,6 +129,11 @@ namespace ConsolePlayground1
         public static void myNewMethod()
         {
             Console.WriteLine("This is AWESOME!!!");
+        }
+        [MenuItem("Exit")]
+        public static void exitMenu()
+        {
+            Environment.Exit(0);
         }
 
 
