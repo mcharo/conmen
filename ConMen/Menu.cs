@@ -31,10 +31,13 @@ namespace ConMen
         {
             Console.WriteLine("This is AWESOME!!!");
         }
-        [MenuItem("Exit")]
-        public void exitMenu()
-        {
-            Environment.Exit(0);
-        }
+        //[MenuItem("This is my exit.")]
+        //public static void Exit()
+        //{
+        //    Console.WriteLine("Exiting...");
+        //    Console.ReadLine();
+        //    Environment.Exit(0);
+        //}
+
     }
 }
