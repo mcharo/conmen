@@ -10,19 +10,18 @@ namespace ConMen
 {
     public class MenuBuilder
     {
-        public MenuBuilder(object instanceOfMenuClass)
+        public MenuBuilder(IMenu instanceOfMenuClass, bool infiniteLoop)
         {
             if (instanceOfMenuClass.GetType().IsInstanceOfType(instanceOfMenuClass))
             {
-                Debug.WriteLine(instanceOfMenuClass.GetType().IsInstanceOfType(instanceOfMenuClass));
-                PrintMenu(instanceOfMenuClass);
+                PrintMenu(instanceOfMenuClass, infiniteLoop);
             }
             else
             {
                 throw new InvalidOperationException("Menu object is not a class or struct instance.");
             }
         }
-        internal static Dictionary<int, string[]> BuildMenu(object instanceOfMenuClass)
+        internal static Dictionary<int, string[]> BuildMenu(IMenu instanceOfMenuClass)
         {
             // keep count of the number of menu items
             int count = 1;
@@ -52,14 +51,16 @@ namespace ConMen
             if (!exitFound)
             {
                 Debug.WriteLine("Count: {0}", count);
-                menuItems.Add(count, new string[] { "Exit", "defaultExit" });
+                menuItems.Add(count, new string[] { "Exit", "Exit" });
             }
             return menuItems;
         }
 
-        internal void PrintMenu(object instanceOfMenuClass)
+        internal void PrintMenu(IMenu instanceOfMenuClass, bool infiniteLoop)
         {
             Dictionary<int, string[]> menuItems = BuildMenu(instanceOfMenuClass);
+            
+
             while (true)
             {
                 Console.WriteLine("Please select a number from the menu below:");
@@ -76,15 +77,10 @@ namespace ConMen
                         Console.WriteLine("\nYou selected to run: " + menuItems[selection][0]);
 
                         Type type = instanceOfMenuClass.GetType();
-                        if (menuItems[selection][1] == "defaultExit")
-                        {
-                            Environment.Exit(0);
-                        }
 
                         MethodInfo info = type.GetMethod(menuItems[selection][1]);
                         
                         info.Invoke(instanceOfMenuClass, null);
-                        //info.Invoke(null, new object[] { });
                     }
                     else
                     {
@@ -104,6 +100,10 @@ namespace ConMen
                 Console.WriteLine("Press <Enter> to continue.");
                 Console.ReadLine();
                 Console.Clear();
+                if (!infiniteLoop)
+                {
+                    break;
+                }
             }
         }
     }

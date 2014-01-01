@@ -15,16 +15,22 @@ namespace ConMen
         {
             MyStruct daStruct = new MyStruct();
             daStruct.anumber = 20;
-            MenuBuilder mb = new MenuBuilder(daStruct);
+            MenuBuilder mb = new MenuBuilder(daStruct, false);
         }
 
-        struct MyStruct
+        struct MyStruct : IMenu
         {
             public int anumber { get; set; }
             [MenuItem("test")]
             public void test()
             {
                 Console.WriteLine("test {0}", anumber);
+            }
+            public void Exit()
+            {
+                Console.WriteLine("Exiting...");
+                Console.ReadLine();
+                Environment.Exit(0);
             }
 
         }

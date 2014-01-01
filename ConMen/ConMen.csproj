@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IMenu.cs" />
     <Compile Include="MenuAttribute.cs" />
     <Compile Include="MenuBuilder.cs" />
     <Compile Include="Program.cs" />
