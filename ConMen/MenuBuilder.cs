@@ -12,12 +12,20 @@ namespace ConMen
     {
         public MenuBuilder(object instanceOfMenuClass)
         {
-            PrintMenu(instanceOfMenuClass);
+            if (instanceOfMenuClass.GetType().IsInstanceOfType(instanceOfMenuClass))
+            {
+                Debug.WriteLine(instanceOfMenuClass.GetType().IsInstanceOfType(instanceOfMenuClass));
+                PrintMenu(instanceOfMenuClass);
+            }
+            else
+            {
+                throw new InvalidOperationException("Menu object is not a class or struct instance.");
+            }
         }
         internal static Dictionary<int, string[]> BuildMenu(object instanceOfMenuClass)
         {
             // keep count of the number of menu items
-            int count = 0;
+            int count = 1;
             Dictionary<int, string[]> menuItems = new Dictionary<int, string[]>();
 
             // use reflection to build a dictionary (ex. 1:firstMethod, 2: the2ndMethod) and the loop over dictionary to print menu.
@@ -43,6 +51,7 @@ namespace ConMen
             }
             if (!exitFound)
             {
+                Debug.WriteLine("Count: {0}", count);
                 menuItems.Add(count, new string[] { "Exit", "defaultExit" });
             }
             return menuItems;
@@ -62,7 +71,7 @@ namespace ConMen
                 try
                 {
                     int selection = int.Parse(Console.ReadLine());
-                    if (selection < menuItems.Count)
+                    if (selection <= menuItems.Count)
                     {
                         Console.WriteLine("\nYou selected to run: " + menuItems[selection][0]);
 
@@ -88,7 +97,7 @@ namespace ConMen
                 {
                     // on invalid input, clear and reset menu
                     Debug.WriteLine(e);
-                    //Console.Clear();
+                    Console.Clear();
                     continue;
                 }
                 // on valid input, pause to view output

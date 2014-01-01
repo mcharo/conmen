@@ -13,17 +13,21 @@ namespace ConMen
 
         public static void Main(string[] args)
         {
-            MenuBuilder mb = new MenuBuilder(new Menu());
+            MyStruct daStruct = new MyStruct();
+            daStruct.anumber = 20;
+            MenuBuilder mb = new MenuBuilder(daStruct);
         }
 
-        
+        struct MyStruct
+        {
+            public int anumber { get; set; }
+            [MenuItem("test")]
+            public void test()
+            {
+                Console.WriteLine("test {0}", anumber);
+            }
 
-        
-
-        
-
-
-
-
+        }
     }
+
 }
