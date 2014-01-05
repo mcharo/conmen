@@ -10,11 +10,16 @@ namespace ConMen
 {
     public class MenuBuilder
     {
+
+        bool _infiniteLoop;
+        IMenu _instanceOfMenuClass;
+
         public MenuBuilder(IMenu instanceOfMenuClass, bool infiniteLoop)
         {
             if (instanceOfMenuClass.GetType().IsInstanceOfType(instanceOfMenuClass))
             {
-                PrintMenu(instanceOfMenuClass, infiniteLoop);
+                _infiniteLoop = infiniteLoop;
+                _instanceOfMenuClass = instanceOfMenuClass;
             }
             else
             {
@@ -31,7 +36,7 @@ namespace ConMen
 
             Type type = instanceOfMenuClass.GetType();
             MethodInfo[] info = type.GetMethods();
-            bool exitFound = false;
+            string exitFound = "";
             foreach (MethodInfo i in info)
             {
                 foreach (object attr in i.GetCustomAttributes(true))
@@ -39,26 +44,28 @@ namespace ConMen
                     if (attr is MenuItemAttribute)
                     {
                         MenuItemAttribute mi = attr as MenuItemAttribute;
-                        menuItems.Add(count, new string[] {mi.Name, i.Name});
                         if (i.Name == "Exit")
                         {
-                            exitFound = true;
+                            exitFound = mi.Name;
                         }
-                        count++;
+                        else
+                        {
+                            menuItems.Add(count, new string[] { mi.Name, i.Name });
+                            count++;
+                        }
                     }
                 }
             }
-            if (!exitFound)
+            if (exitFound != "")
             {
-                Debug.WriteLine("Count: {0}", count);
-                menuItems.Add(count, new string[] { "Exit", "Exit" });
+                menuItems.Add(count, new string[] { exitFound, "Exit" });
             }
             return menuItems;
         }
 
-        internal void PrintMenu(IMenu instanceOfMenuClass, bool infiniteLoop)
+        public void PrintMenu()
         {
-            Dictionary<int, string[]> menuItems = BuildMenu(instanceOfMenuClass);
+            Dictionary<int, string[]> menuItems = BuildMenu(_instanceOfMenuClass);
             
 
             while (true)
@@ -76,11 +83,11 @@ namespace ConMen
                     {
                         Console.WriteLine("\nYou selected to run: " + menuItems[selection][0]);
 
-                        Type type = instanceOfMenuClass.GetType();
+                        Type type = _instanceOfMenuClass.GetType();
 
                         MethodInfo info = type.GetMethod(menuItems[selection][1]);
                         
-                        info.Invoke(instanceOfMenuClass, null);
+                        info.Invoke(_instanceOfMenuClass, null);
                     }
                     else
                     {
@@ -100,7 +107,7 @@ namespace ConMen
                 Console.WriteLine("Press <Enter> to continue.");
                 Console.ReadLine();
                 Console.Clear();
-                if (!infiniteLoop)
+                if (!_infiniteLoop)
                 {
                     break;
                 }

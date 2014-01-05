@@ -7,7 +7,7 @@ namespace ConMen
     {
         private string name;
 
-        public MenuItemAttribute(String name)
+        public MenuItemAttribute(string name)
         {
             this.name = name;
         }
